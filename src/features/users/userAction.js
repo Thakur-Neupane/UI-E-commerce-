@@ -12,6 +12,6 @@ const apiProcessWithToast = async (obj, func) => {
 };
 
 export const createNewAdminAction = async (userData) => {
-  apiProcessWithToast(userData, postNewUser);
+  const response = await apiProcessWithToast(userData, postNewUser);
   // further stuff
 };

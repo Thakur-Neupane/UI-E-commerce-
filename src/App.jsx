@@ -10,10 +10,12 @@ function App() {
       <Routes>
         {/* public routes  */}
         <Route path="/" element={<Login />} />
+        <Route path="/verify-user" element={<h1>404 page not found </h1>} />
 
         {/* private routes  */}
 
         <Route path="admin/new" element={<Register />} />
+        <Route path="*" element={<h1>404 page not found </h1>} />
       </Routes>
       <ToastContainer />
     </div>

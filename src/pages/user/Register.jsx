@@ -9,8 +9,12 @@ const Register = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    const { confirmPassword, ...rest } = form;
+    if (confirmPassword !== rest.password) {
+      return toast.error("Password don't match");
+    }
 
-    createNewAdminAction(form);
+    createNewAdminAction(rest);
   };
 
   const inputs = [
