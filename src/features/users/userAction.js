@@ -5,6 +5,7 @@ import {
   userLogin,
   verifyUserLink,
 } from "./userAxios";
+import { setUser } from "./userSlice";
 
 const apiProcessWithToast = async (obj, func) => {
   const pending = func(obj);
@@ -26,9 +27,24 @@ export const verifyUserLinkAction = async (data) => {
 };
 
 export const loginAdminAction = (data) => async (dispatch) => {
-  const respons = await userLogin(data);
+  const { status, jwts } = await userLogin(data);
+
+  if (jwts?.accessJWT && jwts?.refreshJWT) {
+    sessionStorage.setItem("accessJWT", jwts.accessJWT);
+    localStorage.setItem("refreshJWT", jwts.refreshJWT);
+
+    dispatch(fetchUserProfileAction());
+  }
+
+  //  if login success
 };
 
 export const fetchUserProfileAction = () => async (dispatch) => {
-  const user = await fetchUserProfile();
+  const { status, userInfo } = await fetchUserProfile();
+
+  if (status === "success") {
+    //mount user in the redux store
+    console.log(userInfo);
+    dispatch(setUser(userInfo));
+  }
 };

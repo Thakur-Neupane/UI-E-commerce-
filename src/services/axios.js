@@ -1,6 +1,10 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const getAccessJWT = () => {
+  return sessionStorage.getItem("accessJWT");
+};
+
 export const apiProcessor = async ({
   method,
   url,
@@ -10,10 +14,16 @@ export const apiProcessor = async ({
   showToast,
 }) => {
   try {
+    const headers = isPrivate
+      ? {
+          Authorization: getAccessJWT(),
+        }
+      : null;
     const pending = axios({
       method,
       url,
       data,
+      headers,
     });
 
     let response = {};
@@ -21,9 +31,10 @@ export const apiProcessor = async ({
       toast.promise(pending, {
         pending: "Please wait...",
       });
+
       response = await pending;
+      console.log(response);
       toast[response.data.status](response.data.message);
-      return response;
     } else {
       response = await pending;
     }

@@ -37,6 +37,7 @@ export const fetchUserProfile = () => {
   const obj = {
     url: userEP,
     method: "get",
+    isPrivate: true,
   };
 
   return apiProcessor(obj);
