@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import {
   fetchUserProfile,
+  getNewAccessJWT,
+  logoutUser,
   postNewUser,
   userLogin,
   verifyUserLink,
@@ -47,4 +49,35 @@ export const fetchUserProfileAction = () => async (dispatch) => {
     console.log(userInfo);
     dispatch(setUser(userInfo));
   }
+};
+
+export const autoLoginAction = () => async (dispatch) => {
+  const accessJWT = sessionStorage.getItem("accessJWT");
+  if (accessJWT) {
+    // call get user method
+
+    return dispatch(fetchUserProfileAction());
+  }
+
+  const refreshJWT = localStorage.getItem("refreshJWT");
+  if (refreshJWT) {
+    // get a new access jwt and then call get user method
+
+    const response = await getNewAccessJWT();
+
+    if (response?.accessJWT) {
+      sessionStorage.setItem("accessJWT", response.accessJWT);
+      dispatch(fetchUserProfileAction());
+    }
+  }
+};
+
+export const logoutUserAction = () => (dispatch) => {
+  // call api with authorization for backend logout
+  logoutUser();
+  // front end logout
+
+  dispatch(setUser({}));
+  localStorage.removeItem("refreshJWT");
+  sessionStorage.removeItem("accessJWT");
 };

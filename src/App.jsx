@@ -14,8 +14,16 @@ import Reviews from "./pages/review/Reviews";
 import Admin from "./pages/user/Admin";
 import Orders from "./pages/order/Orders";
 import { Auth } from "./components/auth/Auth";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { autoLoginAction } from "./features/users/userAction";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(autoLoginAction());
+  }, []);
   return (
     <div>
       <Routes>
@@ -33,7 +41,6 @@ function App() {
           }
         >
           <Route path="admin/dashboard" element={<Dashboard />} />
-          <Route path="register/new" element={<Register />} />
 
           <Route path="admin/categories" element={<Categories />} />
           <Route path="admin/products" element={<Products />} />

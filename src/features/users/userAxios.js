@@ -42,3 +42,25 @@ export const fetchUserProfile = () => {
 
   return apiProcessor(obj);
 };
+
+export const getNewAccessJWT = () => {
+  const obj = {
+    url: userEP + "/new-accessjwt",
+    method: "get",
+    isPrivate: true,
+    isRefreshJWT: true,
+  };
+
+  return apiProcessor(obj);
+};
+
+export const logoutUser = () => {
+  const obj = {
+    url: userEP + "/logout",
+    method: "delete",
+    isPrivate: true,
+    showToast: true,
+  };
+
+  return apiProcessor(obj);
+};
