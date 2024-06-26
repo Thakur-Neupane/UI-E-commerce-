@@ -64,3 +64,24 @@ export const logoutUser = () => {
 
   return apiProcessor(obj);
 };
+
+export const requestOTP = (data) => {
+  const obj = {
+    url: userEP + "/otp",
+    method: "post",
+    showToast: true,
+    data,
+  };
+
+  return apiProcessor(obj);
+};
+export const resetPassword = (data) => {
+  const obj = {
+    url: userEP + "/password/reset",
+    method: "patch",
+    showToast: true,
+    data,
+  };
+
+  return apiProcessor(obj);
+};

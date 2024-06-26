@@ -15,13 +15,13 @@ export const apiProcessor = async ({
   url,
   data,
   isPrivate,
-  isRefreshJwt,
+  isRefreshJWT,
   showToast,
 }) => {
   try {
     const headers = isPrivate
       ? {
-          Authorization: isRefreshJwt ? getRefreshJWT() : getAccessJWT(),
+          Authorization: isRefreshJWT ? getRefreshJWT() : getAccessJWT(),
         }
       : null;
     const pending = axios({
@@ -47,30 +47,31 @@ export const apiProcessor = async ({
     return response.data;
   } catch (error) {
     if (error.response?.data?.message === "jwt expired") {
-      // renew the access token and call the same server again
+      //renew the access token and call the same server again
 
-      const accessJWT = await getNewAccessJWT();
+      const response = await getNewAccessJWT();
 
-      if (accessJWT) {
-        sessionStorage.setItem("accessJWT");
+      console.log(response);
+      if (response.accessJWT) {
+        sessionStorage.setItem("accessJWT", response.accessJWT);
+        return apiProcessor({
+          method,
+          url,
+          data,
+          isPrivate,
+          isRefreshJWT,
+          showToast,
+        });
       }
-
-      return apiProcessor({
-        method,
-        url,
-        data,
-        isPrivate,
-        isRefreshJwt,
-        showToast,
-      });
     }
 
     if (error.response?.status === 401) {
       sessionStorage.removeItem("accessJWT");
       localStorage.removeItem("refreshJWT");
     }
+
     showToast && toast.error(error.message);
-    console.log(error);
+
     return {
       status: "error",
       message: error.message,

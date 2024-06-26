@@ -17,6 +17,7 @@ import { Auth } from "./components/auth/Auth";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { autoLoginAction } from "./features/users/userAction";
+import ForgetPassword from "./pages/user/ForgetPassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,8 +29,10 @@ function App() {
     <div>
       <Routes>
         {/* public routes  */}
+        <Route path="admin/new" element={<Register />} />
         <Route path="/" element={<Login />} />
         <Route path="/verify-user" element={<UserVerification />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
 
         {/* private routes  */}
         <Route
@@ -41,7 +44,6 @@ function App() {
           }
         >
           <Route path="admin/dashboard" element={<Dashboard />} />
-
           <Route path="admin/categories" element={<Categories />} />
           <Route path="admin/products" element={<Products />} />
           <Route path="admin/users" element={<User />} />
@@ -49,7 +51,7 @@ function App() {
           <Route path="admin/reviews" element={<Reviews />} />
 
           <Route path="admin/admins" element={<Admin />} />
-          <Route path="admin/new" element={<Register />} />
+          {/* <Route path="admin/new" element={<Register />} /> */}
 
           <Route path="admin/profile" element={<Profile />} />
         </Route>
