@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   showModal: false,
 };
-
 const systemSlice = createSlice({
   name: "system",
   initialState,
@@ -13,6 +12,7 @@ const systemSlice = createSlice({
     },
   },
 });
+
 const { reducer, actions } = systemSlice;
 export const { setShowModal } = actions;
 export default reducer;

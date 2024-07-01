@@ -8,7 +8,7 @@ const catSlice = createSlice({
   name: "category",
   initialState,
   reducers: {
-    setCat: (state, { payload = [] }) => {
+    setCats: (state, { payload = [] }) => {
       state.cats = payload;
     },
   },
@@ -16,6 +16,6 @@ const catSlice = createSlice({
 
 const { reducer, actions } = catSlice;
 
-export const { setCat } = actions;
+export const { setCats } = actions;
 
 export default reducer;

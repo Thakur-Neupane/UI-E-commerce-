@@ -29,7 +29,6 @@ function App() {
     <div>
       <Routes>
         {/* public routes  */}
-        <Route path="admin/new" element={<Register />} />
         <Route path="/" element={<Login />} />
         <Route path="/verify-user" element={<UserVerification />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
@@ -51,7 +50,7 @@ function App() {
           <Route path="admin/reviews" element={<Reviews />} />
 
           <Route path="admin/admins" element={<Admin />} />
-          {/* <Route path="admin/new" element={<Register />} /> */}
+          <Route path="admin/new" element={<Register />} />
 
           <Route path="admin/profile" element={<Profile />} />
         </Route>

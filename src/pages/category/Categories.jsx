@@ -1,30 +1,31 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { CategoryTable } from "../../components/tables/CategoryTable";
+import { AddNewCategory } from "../../components/forms/AddNewCategory";
 import { CustomModal } from "../../components/common/custom-modal/CustomModal";
-import { AddNewCategories } from "../../components/forms/AddNewCategories";
 import { useDispatch } from "react-redux";
 import { setShowModal } from "../../store/systemSlice";
+import { useCustomModal } from "../../Hooks/useCustomModal";
 
 const Categories = () => {
   const dispatch = useDispatch();
+
+  const { show, setShow } = useCustomModal();
   return (
     <div>
-      <h2> Categories</h2>
+      <h2>Categories</h2>
       <hr />
-
-      <div className="text-end b-5">
-        <Button
-          className="btn btn-primary"
-          onClick={() => dispatch(setShowModal(true))}
-        >
+      <div className="text-end mb-5">
+        <Button className="btn btn-primary" onClick={() => setShow(true)}>
           Add New Category
         </Button>
-        <CustomModal title="Add New Category">
-          <AddNewCategories />
-        </CustomModal>
-        <CategoryTable />
       </div>
+
+      <CustomModal title="Add New Category" show={show} setShow={setShow}>
+        <AddNewCategory />
+      </CustomModal>
+
+      <CategoryTable />
     </div>
   );
 };

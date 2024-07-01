@@ -1,44 +1,42 @@
-import React, { forwardRef, useRef } from "react";
-import { CustomInput } from "../common/custom-input/CustomInput";
+import React, { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
+import { CustomInput } from "../common/custom-input/CustomInput";
 import { useDispatch } from "react-redux";
 import { createNewCategoryAction } from "../../features/categories/catAction";
-export const AddNewCategories = () => {
+
+export const AddNewCategory = ({ setShow }) => {
   const titleRef = useRef("");
   const dispatch = useDispatch();
-  const handleOnSubmit = () => {
+
+  const handleOnSubmit = async () => {
     const title = titleRef.current.value;
     if (!title) {
-      return alert("Must fill up the form");
+      return alert("Must fill up the form first");
     }
-    dispatch(
-      createNewCategoryAction({
-        title,
-      })
-    );
+
+    const isSuccess = await dispatch(createNewCategoryAction({ title }));
+    isSuccess && setShow(false);
   };
-  // call api and send data
+
   const inputs = [
     {
       label: "Title",
       name: "title",
       type: "text",
       required: true,
-      placeholder: "Phones ",
+      placeholder: "Phones",
       forwardRef: titleRef,
     },
   ];
   return (
     <div>
-      <Form className="">
+      <Form>
         {inputs.map((item, i) => (
           <CustomInput key={i} {...item} />
         ))}
 
         <div className="d-grid mt-3">
-          <Button type="submit" onClick={handleOnSubmit}>
-            Submit
-          </Button>
+          <Button onClick={handleOnSubmit}>Submit</Button>
         </div>
       </Form>
     </div>
