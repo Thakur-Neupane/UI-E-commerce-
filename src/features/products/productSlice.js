@@ -4,8 +4,8 @@ const initialState = {
   products: [],
 };
 
-const productSlice = createSlice({
-  name: "products",
+const productslice = createSlice({
+  name: "product",
   initialState,
   reducers: {
     setProducts: (state, { payload = [] }) => {
@@ -14,7 +14,7 @@ const productSlice = createSlice({
   },
 });
 
-const { reducer, actions } = productSlice;
+const { reducer, actions } = productslice;
 
 export const { setProducts } = actions;
 

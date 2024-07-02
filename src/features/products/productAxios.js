@@ -6,7 +6,18 @@ export const postNewProduct = (data) => {
     url: productEP,
     method: "post",
     data,
-    // isPrivate: true
+    isPrivate: true,
+    showToast: true,
+  };
+
+  return apiProcessor(obj);
+};
+
+export const getAllProducts = () => {
+  const obj = {
+    url: productEP,
+    method: "get",
+    isPrivate: true,
   };
 
   return apiProcessor(obj);

@@ -1,20 +1,14 @@
-import { postNewProduct } from "./productAxios";
+import { getAllProducts, postNewProduct } from "./productAxios";
+import { setProducts } from "./productSlice";
 
-export const createNewProductAction = (productData) => async (dispatch) => {
-  const response = await postNewProduct(productData);
-
-  console.log(response);
-  if (response.status === "success") {
-    dispatch(setShowModal(false));
-    dispatch(getProductAction());
-  }
+export const createNewProductAction = async (productData) => {
+  await postNewProduct(productData);
 };
 
 export const getProductAction = () => async (dispatch) => {
   const response = await getAllProducts();
 
-  console.log(response);
   if (response.status === "success") {
-    dispatch(setproducts(response.products));
+    dispatch(setProducts(response.products));
   }
 };
