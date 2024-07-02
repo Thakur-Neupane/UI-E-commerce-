@@ -36,6 +36,7 @@ export const editCategoryAction = (form) => async (dispatch) => {
 };
 
 export const deleteCategoryAction = (_id) => async (dispatch) => {
+  console.log(_id);
   const response = await deleteCategory(_id);
 
   console.log(response);

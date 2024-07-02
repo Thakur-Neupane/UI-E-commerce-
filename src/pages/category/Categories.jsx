@@ -3,13 +3,12 @@ import { Button } from "react-bootstrap";
 import { CategoryTable } from "../../components/tables/CategoryTable";
 import { AddNewCategory } from "../../components/forms/AddNewCategory";
 import { CustomModal } from "../../components/common/custom-modal/CustomModal";
-import { useDispatch } from "react-redux";
-import { setShowModal } from "../../store/systemSlice";
+
 import { useCustomModal } from "../../Hooks/useCustomModal";
+import { useSelector } from "react-redux";
 
 const Categories = () => {
-  const dispatch = useDispatch();
-
+  const { Categories } = useSelector((state) => state.catInfo);
   const { show, setShow } = useCustomModal();
   return (
     <div>

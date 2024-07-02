@@ -37,7 +37,8 @@ export const editCategory = (form) => {
 
 export const deleteCategory = (_id) => {
   const obj = {
-    url: catEP + `/:{_id}`,
+    // url: catEP + `/:{_id}`,
+    url: catEP + "/" + _id,
     method: "delete",
     isPrivate: true,
     showToast: true,
