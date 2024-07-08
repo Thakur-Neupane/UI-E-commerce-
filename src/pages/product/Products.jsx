@@ -1,10 +1,10 @@
-import React from "react";
 import { Button } from "react-bootstrap";
-import { ProductTable } from "../../components/tables/ProductTable";
+
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getProductAction } from "../../features/products/productAction";
+import { ProductTable } from "../../components/tables/ProductTable";
 
 const Products = () => {
   const dispatch = useDispatch();

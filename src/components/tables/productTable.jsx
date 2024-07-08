@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { Button, Form, Pagination, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteProductAction } from "../../features/products/productAction";
+
+const serverEP = import.meta.env.VITE_APP_SERVR_ROOT;
 
 export const ProductTable = () => {
   const [displayProd, setDisplayProd] = useState([]);
-  const { products } = useSelector((state) => state.productInfo);
+
+  const { products } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setDisplayProd(products);
-  }, []);
+  }, [products]);
 
   let active = 2;
   let items = [];
@@ -21,10 +26,16 @@ export const ProductTable = () => {
       </Pagination.Item>
     );
   }
+
+  const handleDelete = (_id) => {
+    if (window.confirm("Are you sure you want to delete this category")) {
+      dispatch(deleteProductAction(_id));
+    }
+  };
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center my-4">
-        <div>30 Products Found</div>
+        <div>{products.length} Products Found</div>
         <div>
           <Form.Control placeholder="Search by name..." />
         </div>
@@ -47,7 +58,7 @@ export const ProductTable = () => {
             <tr key={prod._id}>
               <td>{1 + i}</td>
               <td>
-                <img src={prod.thumbnail} width="70px" alt="" />
+                <img src={serverEP + prod.thumbnail} width="70px" alt="" />
               </td>
               <td>{prod.name}</td>
               <td>{prod.price}</td>
@@ -58,9 +69,12 @@ export const ProductTable = () => {
                 {prod.salesStart?.slice(0, 10)} To {prod.salesEnd?.slice(0, 10)}
               </td>
               <td>
-                <Link to={`/admin/product/edit/${prod._id}`}>
+                <Link to={"/admin/products/edit/" + prod._id}>
                   <Button variant="warning">Edit</Button>
                 </Link>
+                <Button variant="danger" onClick={() => handleDelete(prod._id)}>
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}

@@ -10,7 +10,13 @@ export const CustomInput = ({ label, forwardRef, ...rest }) => {
   );
 };
 
-export const CustomSelect = ({ label, options, forwardRef, ...rest }) => {
+export const CustomSelect = ({
+  label,
+  options,
+  forwardRef,
+  isSelectType,
+  ...rest
+}) => {
   return (
     <Form.Group>
       {label && <Form.Label>{label}</Form.Label>}

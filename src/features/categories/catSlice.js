@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cats: [],
+  categories: [],
 };
 
 const catSlice = createSlice({
   name: "category",
   initialState,
   reducers: {
-    setCats: (state, { payload = [] }) => {
-      state.cats = payload;
+    setCategories: (state, { payload = [] }) => {
+      state.categories = payload;
     },
   },
 });
 
 const { reducer, actions } = catSlice;
 
-export const { setCats } = actions;
+export const { setCategories } = actions;
 
 export default reducer;

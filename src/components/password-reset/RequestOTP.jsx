@@ -25,7 +25,7 @@ export const RequestOTP = ({ handleOnOTPRequest }) => {
       <h3 className="text-center">Request OTP</h3>
       <hr />
       <Alert>
-        If your email is found in the system, We will send you an OTP to rest
+        If your email is found in the system, We wills end you an OTP to rest
         the password!
       </Alert>
 

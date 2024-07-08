@@ -1,46 +1,38 @@
-import { setShowModal } from "../../store/systemSlice";
 import {
   deleteCategory,
   editCategory,
   getAllCategories,
   postNewCategory,
 } from "./catAxios";
-import { setCats } from "./catSlice";
+import { setCategories } from "./catSlice";
 
 export const createNewCategoryAction = (catData) => async (dispatch) => {
   const response = await postNewCategory(catData);
 
-  console.log(response);
   if (response.status === "success") {
-    dispatch(setShowModal(false));
-    dispatch(getCategoryAction());
+    dispatch(fetchCategoryAction());
+    return true;
   }
 };
 
-export const getCategoryAction = () => async (dispatch) => {
-  const response = await getAllCategories();
+export const fetchCategoryAction = () => async (dispatch) => {
+  const { status, categories } = await getAllCategories();
 
-  console.log(response);
-  if (response.status === "success") {
-    dispatch(setCats(response.categories));
+  if (status === "success") {
+    dispatch(setCategories(categories));
   }
 };
 
-export const editCategoryAction = (form) => async (dispatch) => {
-  const response = await editCategory(form);
-
-  console.log(response);
-  if (response.status === "success") {
-    dispatch(getCategoryAction());
+export const EditCategoryAction = (form) => async (dispatch) => {
+  const { status } = await editCategory(form);
+  if (status === "success") {
+    dispatch(fetchCategoryAction());
+    return true;
   }
 };
-
 export const deleteCategoryAction = (_id) => async (dispatch) => {
-  console.log(_id);
-  const response = await deleteCategory(_id);
-
-  console.log(response);
-  if (response.status === "success") {
-    dispatch(getCategoryAction());
+  const { status } = await deleteCategory(_id);
+  if (status === "success") {
+    dispatch(fetchCategoryAction());
   }
 };

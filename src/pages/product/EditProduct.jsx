@@ -1,34 +1,64 @@
-import { useEffect } from "react";
-
 import { Button, Form } from "react-bootstrap";
 import useForm from "../../Hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategoryAction } from "../../features/categories/catAction";
-import { Link } from "react-router-dom";
-import { createNewProductAction } from "../../features/products/productAction";
+import { Link, useParams } from "react-router-dom";
+import {
+  editProductAction,
+  getOneProductAction,
+} from "../../features/products/productAction";
 import {
   CustomInput,
   CustomSelect,
 } from "../../components/common/custom-input/CustomInput";
+import { useEffect } from "react";
+import { fetchCategoryAction } from "../../features/categories/catAction";
+import { dateFormatter } from "../../helpers/dateFormatter";
 
-const NewProduct = () => {
-  const {
-    form,
-    setForm,
-    handleOnChange,
-    handleOnImgChange,
-    images,
-    setImages,
-  } = useForm();
+const initialState = {
+  status: "",
+  parentCatId: "",
+  name: "",
+  sku: "",
+  slug: "",
+  qty: 0,
+  price: 0,
+  salesPrice: 0,
+  salesStart: "",
+  salesEnd: "",
+  description: "",
+};
+
+const EditProduct = () => {
+  const { _id } = useParams();
+
+  const { form, setForm, handleOnChange, handleOnImgChange, images } =
+    useForm(initialState);
+
   const { categories } = useSelector((state) => state.category);
+  const { prod } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    !categories.length && dispatch(fetchCategoryAction());
+    if (!categories || categories.length === 0) {
+      dispatch(fetchCategoryAction());
+    }
   }, [dispatch, categories]);
+
+  useEffect(() => {
+    if (_id !== form._id) {
+      dispatch(getOneProductAction(_id));
+      prod?._id && setForm(prod);
+    }
+  }, [_id, dispatch, prod, setForm, form]);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    // Check if categories are available before proceeding
+    if (!categories || categories.length === 0) {
+      console.error("Categories are not loaded yet");
+      return;
+    }
+
     // populate the form data
     const formData = new FormData();
     for (let key in form) {
@@ -38,25 +68,35 @@ const NewProduct = () => {
     if (images.length > 0) {
       [...images].forEach((img) => formData.append("images", img));
     }
-    createNewProductAction(formData);
+    dispatch(editProductAction(formData));
   };
 
-  const options = categories
-    .filter((p) => p.status === "active")
-    .map(({ title, _id }) => {
-      return { text: title, value: _id };
-    });
-
-  console.log(options);
-
   const inputs = [
+    {
+      isSelectType: true,
+      label: "Status",
+      name: "status",
+      type: "text",
+      required: true,
+      options: [
+        { label: "-- Select --", value: "" },
+        { value: "active", text: "Active" },
+        { value: "inactive", text: "Inactive" },
+      ],
+    },
     {
       label: "Category ",
       name: "parentCatId",
       type: "text",
       required: true,
       isSelectType: true,
-      options,
+      options: categories
+        ? categories
+            .filter((p) => p.status === "active")
+            .map(({ title, _id }) => {
+              return { text: title, value: _id };
+            })
+        : [],
     },
     {
       label: "Name",
@@ -71,6 +111,15 @@ const NewProduct = () => {
       type: "text",
       required: true,
       placeholder: "DJK-H9879",
+      disabled: true,
+    },
+    {
+      label: "Slug",
+      name: "slug",
+      type: "text",
+      required: true,
+      placeholder: "",
+      disabled: true,
     },
     {
       label: "Qty",
@@ -119,7 +168,7 @@ const NewProduct = () => {
 
   return (
     <div>
-      <h2>Create new product</h2>
+      <h2>Edit product</h2>
       <hr />
 
       <Link to="/admin/products">
@@ -128,9 +177,26 @@ const NewProduct = () => {
       <Form onSubmit={handleOnSubmit} encType="multipart/form-data">
         {inputs.map((item, i) =>
           item.isSelectType ? (
-            <CustomSelect key={i} {...item} onChange={handleOnChange} />
+            <CustomSelect
+              key={i}
+              {...item}
+              onChange={handleOnChange}
+              value={form[item.name]}
+            />
+          ) : item.type === "date" ? (
+            <CustomInput
+              key={i}
+              {...item}
+              onChange={handleOnChange}
+              value={form[item.name] ? dateFormatter(form[item.name]) : ""}
+            />
           ) : (
-            <CustomInput key={i} {...item} onChange={handleOnChange} />
+            <CustomInput
+              key={i}
+              {...item}
+              onChange={handleOnChange}
+              value={form[item.name]}
+            />
           )
         )}
 
@@ -155,4 +221,4 @@ const NewProduct = () => {
   );
 };
 
-export default NewProduct;
+export default EditProduct;

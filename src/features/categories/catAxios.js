@@ -1,9 +1,10 @@
 import { apiProcessor } from "../../services/axios";
-const catEP = import.meta.env.VITE_APP_SERVR_ROOT + "/api/v1/categories";
+
+const categoryEP = import.meta.env.VITE_APP_SERVR_ROOT + "/api/v1/categories";
 
 export const postNewCategory = (data) => {
   const obj = {
-    url: catEP,
+    url: categoryEP,
     method: "post",
     data,
     isPrivate: true,
@@ -12,20 +13,18 @@ export const postNewCategory = (data) => {
 
   return apiProcessor(obj);
 };
-
 export const getAllCategories = () => {
   const obj = {
-    url: catEP,
+    url: categoryEP,
     method: "get",
     isPrivate: true,
   };
 
   return apiProcessor(obj);
 };
-
 export const editCategory = (form) => {
   const obj = {
-    url: catEP + `/:{form._id}`,
+    url: `${categoryEP}/${form._id}`,
     method: "put",
     isPrivate: true,
     showToast: true,
@@ -34,11 +33,9 @@ export const editCategory = (form) => {
 
   return apiProcessor(obj);
 };
-
 export const deleteCategory = (_id) => {
   const obj = {
-    // url: catEP + `/:{_id}`,
-    url: catEP + "/" + _id,
+    url: `${categoryEP}/${_id}`,
     method: "delete",
     isPrivate: true,
     showToast: true,
