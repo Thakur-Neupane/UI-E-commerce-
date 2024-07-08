@@ -121,7 +121,13 @@ const NewProduct = () => {
         <Form.Group>
           <Form.Label>Upload Images</Form.Label>
 
-          <Form.Control type="file" multiple />
+          <Form.Control
+            type="file"
+            name="images"
+            required={true}
+            accept="image/png, image/jpeg , image/gif"
+            multiple
+          />
         </Form.Group>
 
         <div className="d-grid mt-3">
